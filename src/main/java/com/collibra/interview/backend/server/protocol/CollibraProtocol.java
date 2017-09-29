@@ -11,8 +11,8 @@ public class CollibraProtocol {
         return startConversationHandler.handle();
     }
 
-    public String end() {
-        return new EndConversationHandler().handle()
+    public String end(SessionContext sessionContext) {
+        return new EndConversationHandler().handle(sessionContext);
     }
 
 }

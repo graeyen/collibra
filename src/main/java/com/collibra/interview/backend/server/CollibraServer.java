@@ -87,7 +87,7 @@ public class CollibraServer {
     }
 
     private static String createGoodbyMessage(SessionContext sessionContext) {
-        return new EndConversationHandler().handle(null, sessionContext);
+        return collibraProtocol.end(sessionContext);
     }
 
 }
