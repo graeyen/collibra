@@ -20,7 +20,11 @@ public class CollibraServer {
 
         ServerSocket serverSocket = new ServerSocket(50000);
 
+
+
         while (true) {
+
+            System.out.println("Server running");
 
             Socket clientSocket = serverSocket.accept();
             clientSocket.setSoTimeout(30 * 1000);
