@@ -31,7 +31,7 @@
                     <addClasspath>true</addClasspath>
                     <classpathPrefix>libs/</classpathPrefix>
                     <mainClass>
-                        com.collibra.interview.backend.server.CollibraServer
+                        com.collibra.interview.backend.server.CollibraBootstrap
                     </mainClass>
                 </manifest>
             </archive>
@@ -39,4 +39,13 @@
     </plugin>
     </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+    </dependencies>
 </project>
