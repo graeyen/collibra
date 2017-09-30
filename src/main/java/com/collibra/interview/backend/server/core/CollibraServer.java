@@ -1,6 +1,6 @@
 package com.collibra.interview.backend.server.core;
 
-import com.collibra.interview.backend.server.protocol.CollibraConversation;
+import com.collibra.interview.backend.server.protocol.Conversation;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -30,9 +30,9 @@ public class CollibraServer {
             AsciiOutputChannel outputChannel = new AsciiOutputChannel(clientSocket);
             AsciiInputChannel inputChannel = new AsciiInputChannel(clientSocket);
 
-            // START PROTOCOL
-            CollibraConversation conversation = CollibraConversation.startNewConversation();
-            outputChannel.sendMessage(conversation.createStartMessage());
+            // Start the conversation with the client
+            Conversation conversation = Conversation.create();
+            outputChannel.sendMessage(conversation.start());
 
             // READ RESPONSES
             String inputMessage;
@@ -45,11 +45,11 @@ public class CollibraServer {
                     if (inputMessage == null) {
                         doContinueConversation = false;
                     } else {
-                        outputChannel.sendMessage(conversation.createMessageForInput(inputMessage));
+                        outputChannel.sendMessage(conversation.answer(inputMessage));
                     }
                 } catch (SocketTimeoutException e) {
                     System.out.println("TIMEOUT !");
-                    outputChannel.sendMessage(conversation.createEndMessage());
+                    outputChannel.sendMessage(conversation.end());
                     doContinueConversation = false;
 
                 } catch(SocketException e) {

@@ -1,33 +1,31 @@
 package com.collibra.interview.backend.server.protocol;
 
-import com.collibra.interview.backend.server.model.DirectedGraph;
-
 /**
  * Created by ger on 29/09/2017.
  */
-public class CollibraConversation {
+public class Conversation {
 
     private StartConversationHandler startConversationHandler = new StartConversationHandler();
     private SessionContext sessionContext;
 
-    // Use the factory method for creating a new instance
-    private CollibraConversation() {
+    private Conversation() {
+        // Use the factory method for creating a new instance
+    }
+
+    public static Conversation create() {
+        return new Conversation();
+    }
+
+    public String start() {
         sessionContext = new SessionContext(System.currentTimeMillis());
-    }
-
-    public static CollibraConversation startNewConversation() {
-        return new CollibraConversation();
-    }
-
-    public String createStartMessage() {
         return startConversationHandler.handle();
     }
 
-    public String createEndMessage() {
+    public String end() {
         return new EndConversationHandler().handle(sessionContext);
     }
 
-    public String createMessageForInput(String inputMessage) {
+    public String answer(String inputMessage) {
         if (inputMessage.startsWith(("HI, I'M"))) {
             return new GreetClientHandler().handle(inputMessage, sessionContext);
         } else if (inputMessage.startsWith("ADD NODE")) {
@@ -39,7 +37,7 @@ public class CollibraConversation {
         } else if (inputMessage.startsWith("REMOVE EDGE")) {
             return new RemoveEdgeHandler().handle(inputMessage);
         } else if (inputMessage.startsWith("BYE MATE!")) {
-            return createEndMessage();
+            return end();
         }
 
         else {
