@@ -4,7 +4,7 @@ package com.collibra.interview.backend.server.protocol;
  * Created by ger on 29/09/2017.
  *
  */
-public class ClientGreetResponseHandler implements ResponseHandler {
+public class GreetClientResponseHandler implements ResponseHandler {
 
     @Override
     public String handle(String response, SessionContext sessionContext) {

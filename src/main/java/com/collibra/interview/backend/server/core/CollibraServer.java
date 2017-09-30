@@ -2,91 +2,67 @@ package com.collibra.interview.backend.server.core;
 
 import com.collibra.interview.backend.server.protocol.CollibraConversation;
 
-import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.nio.charset.Charset;
 
 /**
  * Created by ger on 29/09/2017.
  */
 public class CollibraServer {
 
-    private  CollibraConversation collibraConversation;
+    private static final int DEFAULT_TIME_OUT_MS = 30 * 1000;
 
     public void start(int port) throws Exception {
 
         ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println(String.format("Server running on port [%s]", port));
 
         while (true) {
 
-            System.out.println("Server running");
-
             Socket clientSocket = serverSocket.accept();
-            clientSocket.setSoTimeout(30 * 1000);
+            clientSocket.setSoTimeout(DEFAULT_TIME_OUT_MS);
 
             System.out.println("Client connects");
 
+            // Setup communication channels
+            AsciiOutputChannel outputChannel = new AsciiOutputChannel(clientSocket);
+            AsciiInputChannel inputChannel = new AsciiInputChannel(clientSocket);
+
             // START PROTOCOL
-            collibraConversation = CollibraConversation.startNewConversation();
-
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), Charset.forName("US-ASCII")), true);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            String greeting = collibraConversation.createStartMessage();
-            sendMessage(writer, greeting);
+            CollibraConversation conversation = CollibraConversation.startNewConversation();
+            outputChannel.sendMessage(conversation.createStartMessage());
 
             // READ RESPONSES
-            String response;
+            String inputMessage;
 
-            boolean continueConversation = true;
+            boolean doContinueConversation = true;
             do {
 
                 try {
-                    response = readResponse(reader);
-                    if (response == null) {
-                        continueConversation = false;
+                    inputMessage = inputChannel.read();
+                    if (inputMessage == null) {
+                        doContinueConversation = false;
                     } else {
-                        handleResponse(writer, response);
+                        outputChannel.sendMessage(conversation.createMessageForInput(inputMessage));
                     }
                 } catch (SocketTimeoutException e) {
-                    String textOut = createGoodbyMessage();
-                    System.out.println("TIMEOUT !. SEND:" + textOut);
-                    writer.println(textOut);
-                    continueConversation = false;
+                    System.out.println("TIMEOUT !");
+                    outputChannel.sendMessage(conversation.createEndMessage());
+                    doContinueConversation = false;
+
                 } catch(SocketException e) {
-                    continueConversation = false;
+                    doContinueConversation = false;
                 }
-            } while (continueConversation);
+            } while (doContinueConversation);
 
-
+            inputChannel.close();
+            outputChannel.close();
             clientSocket.close();
+
         }
 
-    }
-
-    private void sendMessage(PrintWriter writer, String greeting) {
-        System.out.println("SEND:" + greeting);
-        writer.println(greeting);
-    }
-
-    private void handleResponse(PrintWriter writer, String response) {
-        String message = collibraConversation.handleResponse(response);
-        sendMessage(writer, message);
-    }
-
-    private String readResponse(BufferedReader reader) throws IOException {
-        System.out.println("Waiting for response");
-        String response = reader.readLine();
-
-        System.out.println("RECEIVE: " + response);
-        return response;
-    }
-
-    private String createGoodbyMessage() {
-        return collibraConversation.createEndMessage();
     }
 
 }

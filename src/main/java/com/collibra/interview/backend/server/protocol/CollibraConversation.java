@@ -25,11 +25,11 @@ public class CollibraConversation {
         return new EndConversationHandler().handle(sessionContext);
     }
 
-    public String handleResponse(String response) {
-        if (response.startsWith(("HI, I'M"))) {
-            return new ClientGreetResponseHandler().handle(response, sessionContext);
+    public String createMessageForInput(String inputMessage) {
+        if (inputMessage.startsWith(("HI, I'M"))) {
+            return new GreetClientResponseHandler().handle(inputMessage, sessionContext);
         } else {
-            return new DefaultResponseHandler().handle(response, sessionContext);
+            return new UnkownResponseHandler().handle(inputMessage, sessionContext);
         }
     }
 }
