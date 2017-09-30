@@ -2,6 +2,7 @@ package com.collibra.interview.backend.server.core;
 
 import com.collibra.interview.backend.server.protocol.Conversation;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -14,17 +15,15 @@ public class CollibraServer {
 
     private static final int DEFAULT_TIME_OUT_MS = 30 * 1000;
 
-    public void start(int port) throws Exception {
+    public void start(int port) {
 
-        ServerSocket serverSocket = new ServerSocket(port);
+        ServerSocket serverSocket = setupSocket(port);
+
         System.out.println(String.format("Server running on port [%s]", port));
 
         while (true) {
 
-            Socket clientSocket = serverSocket.accept();
-            clientSocket.setSoTimeout(DEFAULT_TIME_OUT_MS);
-
-            System.out.println("Client connects");
+            Socket clientSocket = listenForConnection(serverSocket);
 
             // Setup communication channels
             AsciiOutputChannel outputChannel = new AsciiOutputChannel(clientSocket);
@@ -54,15 +53,46 @@ public class CollibraServer {
 
                 } catch(SocketException e) {
                     doContinueConversation = false;
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    // lets keep on trying reading messages.
                 }
             } while (doContinueConversation);
 
             inputChannel.close();
             outputChannel.close();
-            clientSocket.close();
+            closeSocket(clientSocket);
 
         }
 
+    }
+
+    private void closeSocket(Socket clientSocket) {
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Socket listenForConnection(ServerSocket serverSocket) {
+        try {
+            Socket clientSocket = serverSocket.accept();
+            clientSocket.setSoTimeout(DEFAULT_TIME_OUT_MS);
+            return clientSocket;
+        } catch (IOException e) {
+            throw new RuntimeException("There was a problem listening for a connection", e);
+        }
+    }
+
+    private ServerSocket setupSocket(int port) {
+        ServerSocket serverSocket;
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create the socket", e);
+        }
+        return serverSocket;
     }
 
 }

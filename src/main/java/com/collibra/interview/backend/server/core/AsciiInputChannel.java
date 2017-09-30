@@ -9,8 +9,12 @@ public class AsciiInputChannel {
 
     private BufferedReader reader;
 
-    public AsciiInputChannel(Socket socket) throws Exception {
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    public AsciiInputChannel(Socket socket) {
+        try {
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to setup input channel", e);
+        }
     }
 
     public String read() throws IOException {
