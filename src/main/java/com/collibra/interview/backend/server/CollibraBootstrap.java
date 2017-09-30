@@ -7,9 +7,11 @@ import com.collibra.interview.backend.server.core.CollibraServer;
  */
 public class CollibraBootstrap {
 
-    public static void main(String[] args) throws Exception {
+    private static final int DEFAULT_PORT = 50000;
+
+    public static void main(String[] args)  {
 
         CollibraServer collibraServer = new CollibraServer();
-        collibraServer.start(50000);
+        collibraServer.start(DEFAULT_PORT);
     }
 }
