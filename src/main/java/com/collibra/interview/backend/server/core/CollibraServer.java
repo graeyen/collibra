@@ -1,6 +1,6 @@
-package com.collibra.interview.backend.server;
+package com.collibra.interview.backend.server.core;
 
-import com.collibra.interview.backend.server.protocol.*;
+import com.collibra.interview.backend.server.protocol.CollibraConversation;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,13 +14,11 @@ import java.nio.charset.Charset;
  */
 public class CollibraServer {
 
-    private static CollibraProtocol collibraProtocol = new CollibraProtocol();
+    private  CollibraConversation collibraConversation;
 
-    public static void main(String[] args) throws Exception {
+    public void start(int port) throws Exception {
 
-        ServerSocket serverSocket = new ServerSocket(50000);
-
-
+        ServerSocket serverSocket = new ServerSocket(port);
 
         while (true) {
 
@@ -32,14 +30,13 @@ public class CollibraServer {
             System.out.println("Client connects");
 
             // START PROTOCOL
-            SessionContext sessionContext = new SessionContext(System.currentTimeMillis());
+            collibraConversation = CollibraConversation.startNewConversation();
 
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), Charset.forName("US-ASCII")), true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            String greeting = collibraProtocol.start();
-            System.out.println("SEND:" + greeting);
-            writer.println(greeting);
+            String greeting = collibraConversation.createStartMessage();
+            sendMessage(writer, greeting);
 
             // READ RESPONSES
             String response;
@@ -52,10 +49,10 @@ public class CollibraServer {
                     if (response == null) {
                         continueConversation = false;
                     } else {
-                        handleResponse(writer, response, sessionContext);
+                        handleResponse(writer, response);
                     }
                 } catch (SocketTimeoutException e) {
-                    String textOut = createGoodbyMessage(sessionContext);
+                    String textOut = createGoodbyMessage();
                     System.out.println("TIMEOUT !. SEND:" + textOut);
                     writer.println(textOut);
                     continueConversation = false;
@@ -70,19 +67,17 @@ public class CollibraServer {
 
     }
 
-    private static void handleResponse(PrintWriter writer, String response, SessionContext sessionContext) {
-        if (response.startsWith(("HI, I'M"))) {
-            String textOut = new ClientGreetResponseHandler().handle(response, sessionContext);
-            System.out.println("SEND:" + textOut);
-            writer.println(textOut);
-        } else {
-            String textOut = new DefaultResponseHandler().handle(response, sessionContext);
-            System.out.println("SEND:" + textOut);
-            writer.println(textOut);
-        }
+    private void sendMessage(PrintWriter writer, String greeting) {
+        System.out.println("SEND:" + greeting);
+        writer.println(greeting);
     }
 
-    private static String readResponse(BufferedReader reader) throws IOException {
+    private void handleResponse(PrintWriter writer, String response) {
+        String message = collibraConversation.handleResponse(response);
+        sendMessage(writer, message);
+    }
+
+    private String readResponse(BufferedReader reader) throws IOException {
         System.out.println("Waiting for response");
         String response = reader.readLine();
 
@@ -90,8 +85,8 @@ public class CollibraServer {
         return response;
     }
 
-    private static String createGoodbyMessage(SessionContext sessionContext) {
-        return collibraProtocol.end(sessionContext);
+    private String createGoodbyMessage() {
+        return collibraConversation.createEndMessage();
     }
 
 }
