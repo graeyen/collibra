@@ -68,6 +68,8 @@ public class DirectedGraphTest {
     @Test
     public void testRemoveEdgeFromExistingNode() {
         directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addEdge("node1", "node2", 5);
         boolean result = directedGraph.removeEdge("node1", "node2");
         Assert.assertTrue(result);
     }
@@ -77,5 +79,22 @@ public class DirectedGraphTest {
 
         boolean result = directedGraph.removeEdge("node1", "node2");
         Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testContent() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addNode("node3");
+        directedGraph.addEdge("node1", "node3" , 2);
+        directedGraph.addEdge("node2", "node3" , 5);
+        directedGraph.addEdge("node2", "node1" , 8);
+
+        String result = directedGraph.toString();
+        Assert.assertEquals("[[node1:(->node3+2)][node2:(->node3+5)(->node1+8)][node3:]]", result);
+
+        directedGraph.removeEdge("node2", "node1");
+        result = directedGraph.toString();
+        Assert.assertEquals("[[node1:(->node3+2)][node2:(->node3+5)][node3:]]", result);
     }
 }
