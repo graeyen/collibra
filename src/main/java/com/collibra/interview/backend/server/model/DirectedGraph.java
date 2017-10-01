@@ -41,6 +41,26 @@ public class DirectedGraph {
         return node1.edges.remove(new Edge(Node.fromName(nodeName2)));
     }
 
+    public int findShortestPath(String nodeName1, String nodeName2) {
+        int index = nodes.indexOf(Node.fromName(nodeName1));
+        if (index != -1) {
+            Node node1 = nodes.get(index);
+            return findWeight(nodeName2, node1);
+
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    private int findWeight(String nodeName2, Node node1) {
+        int weightFound = Integer.MAX_VALUE;
+        for(Edge edge : node1.edges) {
+            if(edge.destinationNode.nodeName.equals(nodeName2) && edge.weight < weightFound) {
+                weightFound = edge.weight;
+            }
+        }
+        return weightFound;
+    }
+
     private boolean doesNotExists(String nodeName1) {
         return !nodes.contains(new Node(nodeName1));
     }

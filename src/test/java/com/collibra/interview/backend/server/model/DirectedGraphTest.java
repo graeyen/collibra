@@ -82,6 +82,37 @@ public class DirectedGraphTest {
     }
 
     @Test
+    public void testFindShortestPathNoPath() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+
+        int result = directedGraph.findShortestPath("node1", "node2");
+        Assert.assertEquals(Integer.MAX_VALUE, result);
+
+    }
+
+    @Test
+    public void testFindShortestPathSingleEdge() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addEdge("node1", "node2", 5);
+        int result = directedGraph.findShortestPath("node1", "node2");
+        Assert.assertEquals(5, result);
+
+    }
+
+    @Test
+    public void testFindShortestPathDoubleEdge() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addEdge("node1", "node2", 5);
+        directedGraph.addEdge("node1", "node2", 2);
+        int result = directedGraph.findShortestPath("node1", "node2");
+        Assert.assertEquals(2, result);
+
+    }
+
+    @Test
     public void testContent() {
         directedGraph.addNode("node1");
         directedGraph.addNode("node2");
