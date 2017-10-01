@@ -6,6 +6,7 @@ package com.collibra.interview.backend.server.protocol;
 public class Conversation {
 
     private StartConversationHandler startConversationHandler = new StartConversationHandler();
+    private ConversationHandlerDispatch dispatch = new ConversationHandlerDispatch();
     private SessionContext sessionContext;
 
     private Conversation() {
@@ -22,26 +23,10 @@ public class Conversation {
     }
 
     public String end() {
-        return new EndConversationHandler().handle(sessionContext);
+        return new EndConversationHandler().handle("", sessionContext);
     }
 
     public String answer(String inputMessage) {
-        if (inputMessage.startsWith(("HI, I'M"))) {
-            return new GreetClientHandler().handle(inputMessage, sessionContext);
-        } else if (inputMessage.startsWith("ADD NODE")) {
-            return new AddNodeHandler().handle(inputMessage);
-        } else if (inputMessage.startsWith("ADD EDGE")) {
-            return new AddEdgeHandler().handle(inputMessage);
-        } else if (inputMessage.startsWith("REMOVE NODE")) {
-            return new RemoveNodeHandler().handle(inputMessage);
-        } else if (inputMessage.startsWith("REMOVE EDGE")) {
-            return new RemoveEdgeHandler().handle(inputMessage);
-        } else if (inputMessage.startsWith("BYE MATE!")) {
-            return end();
-        }
-
-        else {
-            return new UnkownResponseHandler().handle(inputMessage, sessionContext);
-        }
+        return dispatch.dispatch(inputMessage, sessionContext);
     }
 }

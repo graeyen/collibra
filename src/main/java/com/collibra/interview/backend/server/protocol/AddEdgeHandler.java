@@ -1,8 +1,14 @@
 package com.collibra.interview.backend.server.protocol;
 
-public class AddEdgeHandler extends DirectGraphHandler {
+public class AddEdgeHandler extends DirectGraphHandler implements ConversationHandler {
 
-    public String handle(String inputMessage) {
+    @Override
+    public boolean appliesTo(String inputMessage) {
+        return inputMessage.startsWith(ClientMessages.ADD_EDGE);
+    }
+
+    @Override
+    public String handle(String inputMessage, SessionContext sessionContext) {
         String edgeInformation = inputMessage.substring(9, inputMessage.length());
         String[] edgeValues = edgeInformation.split(" ");
         if (directedGraph.addEdge(edgeValues[0], edgeValues[1], Integer.parseInt(edgeValues[2]))) {

@@ -1,10 +1,14 @@
 package com.collibra.interview.backend.server.protocol;
 
-import com.collibra.interview.backend.server.model.DirectedGraph;
+public class AddNodeHandler extends DirectGraphHandler implements ConversationHandler {
 
-public class AddNodeHandler extends DirectGraphHandler {
+    @Override
+    public boolean appliesTo(String inputMessage) {
+        return inputMessage.startsWith(ClientMessages.ADD_NODE);
+    }
 
-    public String handle(String inputMessage) {
+    @Override
+    public String handle(String inputMessage, SessionContext sessionContext) {
         String nodeName = inputMessage.substring(9, inputMessage.length());
         if (directedGraph.addNode(nodeName)) {
             return "NODE ADDED";
