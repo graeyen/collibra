@@ -51,11 +51,17 @@ public class DirectedGraph {
         return Integer.MAX_VALUE;
     }
 
-    private int findWeight(String nodeName2, Node node1) {
+    private int findWeight(String nodeNameToFind, Node currentNode) {
         int weightFound = Integer.MAX_VALUE;
-        for(Edge edge : node1.edges) {
-            if(edge.destinationNode.nodeName.equals(nodeName2) && edge.weight < weightFound) {
+        for(Edge edge : currentNode.edges) {
+            if(edge.destinationNode.nodeName.equals(nodeNameToFind) && edge.weight < weightFound) {
                 weightFound = edge.weight;
+            } else {
+                int nextWeight = findWeight(nodeNameToFind, edge.destinationNode);
+                if (nextWeight != Integer.MAX_VALUE) {
+                    weightFound = edge.weight + nextWeight;
+                }
+
             }
         }
         return weightFound;
