@@ -125,6 +125,19 @@ public class DirectedGraphTest {
     }
 
     @Test
+    public void testFindShortestPathWhen3NodesAnd1DoubleEdge() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addNode("node3");
+        directedGraph.addEdge("node1", "node2", 5);
+        directedGraph.addEdge("node2", "node3", 6);
+        directedGraph.addEdge("node2", "node3", 4);
+        int result = directedGraph.findShortestPath("node1", "node3");
+        Assert.assertEquals(9, result);
+
+    }
+
+    @Test
     public void testFindShortestPathWhen4NodesSingleEdge() {
         directedGraph.addNode("node1");
         directedGraph.addNode("node2");
@@ -137,6 +150,23 @@ public class DirectedGraphTest {
         Assert.assertEquals(14, directedGraph.findShortestPath("node1", "node4"));
         Assert.assertEquals(9, directedGraph.findShortestPath("node2", "node4"));
         Assert.assertEquals(Integer.MAX_VALUE, directedGraph.findShortestPath("node3", "node1"));
+
+    }
+
+    @Test
+    public void testFindShortestPathWhenLongerPathIsTheShortest() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addNode("node3");
+        directedGraph.addNode("node4");
+
+        directedGraph.addEdge("node1", "node4", 50);
+        directedGraph.addEdge("node1", "node2", 4);
+        directedGraph.addEdge("node2", "node3", 3);
+        directedGraph.addEdge("node3", "node4", 6);
+
+        Assert.assertEquals(13, directedGraph.findShortestPath("node1", "node4"));
+
 
     }
 

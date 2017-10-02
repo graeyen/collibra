@@ -91,6 +91,9 @@ public class DirectedGraph {
         return content.toString();
     }
 
+    public void clear() {
+        nodes.clear();
+    }
 
     static private class Node {
         private String nodeName;

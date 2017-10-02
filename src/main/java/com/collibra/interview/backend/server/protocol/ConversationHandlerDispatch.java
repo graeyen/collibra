@@ -14,6 +14,7 @@ public class ConversationHandlerDispatch {
         conversationHandlers.add(new RemoveNodeHandler());
         conversationHandlers.add(new RemoveEdgeHandler());
         conversationHandlers.add(new EndConversationHandler());
+        conversationHandlers.add(new ShortestPathHandler());
 
         // should always be the latest of the list
         conversationHandlers.add(new UnkownConversationHandler());

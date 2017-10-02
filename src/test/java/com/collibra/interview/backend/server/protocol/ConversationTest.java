@@ -12,6 +12,7 @@ public class ConversationTest {
     public void setup() {
         conversation = Conversation.create();
         conversation.start();
+        DirectGraphHandler.directedGraph.clear();
     }
 
     @Test
@@ -42,6 +43,15 @@ public class ConversationTest {
     public void testAnswerRemoveEdge() {
         String result = conversation.answer(ClientMessages.REMOVE_EDGE  + " NODE1 NODE2");
         Assert.assertEquals("ERROR: NODE NOT FOUND", result);
+    }
+
+    @Test
+    public void testShortestPath() {
+        conversation.answer(ClientMessages.ADD_NODE  + " NODE1");
+        conversation.answer(ClientMessages.ADD_NODE  + " NODE2");
+        conversation.answer(ClientMessages.ADD_EDGE  + " NODE1 NODE2 2");
+        String result = conversation.answer(ClientMessages.SHORTEST_PATH + " NODE1 NODE2");
+        Assert.assertEquals("2", result);
     }
 
     @Test

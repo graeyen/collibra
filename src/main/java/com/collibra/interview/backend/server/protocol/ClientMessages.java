@@ -10,4 +10,6 @@ public final class ClientMessages {
 
     public static final String REMOVE_NODE = "REMOVE NODE";
     public static final String REMOVE_EDGE = "REMOVE EDGE";
+
+    public static final String SHORTEST_PATH = "SHORTEST PATH";
 }
