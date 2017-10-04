@@ -85,9 +85,7 @@ public class DirectedGraph {
                     edges = subRoute.continuesEdges;
 
                     weight =  subRoute.weight;
-                    for(SubRoute subRoute1 : routeQueue) {
-                        weight = weight + subRoute1.weight;
-                    }
+
 
                 }
 
@@ -100,9 +98,7 @@ public class DirectedGraph {
                     SubRoute subRoute = routeQueue.removeFirst();
                     edges = subRoute.continuesEdges;
                     weight = subRoute.weight;
-                    for(SubRoute subRoute1 : routeQueue) {
-                        weight = weight + subRoute1.weight;
-                    }
+                   
 
                 }
             }
