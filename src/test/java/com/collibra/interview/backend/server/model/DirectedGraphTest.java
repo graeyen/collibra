@@ -13,6 +13,7 @@ public class DirectedGraphTest {
         directedGraph = new DirectedGraph();
     }
 
+
     @Test
     public void testAddNotExistingNode() {
         boolean result = directedGraph.addNode("Node1");
@@ -185,5 +186,19 @@ public class DirectedGraphTest {
         directedGraph.removeEdge("node2", "node1");
         result = directedGraph.toString();
         Assert.assertEquals("[[node1:(->node3+2)][node2:(->node3+5)][node3:]]", result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindShortestPathTargetNodeNotExisting() {
+        directedGraph.addNode("node1");
+        directedGraph.addEdge("node1", "node2", 3);
+        directedGraph.findShortestPath("node1", "node2");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindShortestPathStartNodeNotExisting() {
+        directedGraph.addNode("node1");
+        directedGraph.addEdge("node2", "node1", 3);
+        directedGraph.findShortestPath("node2", "node1");
     }
 }

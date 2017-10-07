@@ -4,15 +4,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PathFinderTest {
+public class FasterPathFinderTest {
 
     private DirectedGraph directedGraph;
-    private PathFinder pathFinder;
+    private FasterPathFinder pathFinder;
 
     @Before
     public void setup() {
         directedGraph = new DirectedGraph();
-        pathFinder = new PathFinder();
+        pathFinder = new FasterPathFinder();
     }
 
 
@@ -22,7 +22,7 @@ public class PathFinderTest {
         directedGraph.addNode("node2");
 
         int result = pathFinder.findShortestPath(getNode("node1"), getNode("node2"));
-        Assert.assertEquals(Integer.MAX_VALUE, result);
+        Assert.assertEquals(PathFinder.NO_ROUTE_WEIGHT, result);
 
     }
 

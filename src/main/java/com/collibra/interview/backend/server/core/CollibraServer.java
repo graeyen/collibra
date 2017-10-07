@@ -1,6 +1,8 @@
 package com.collibra.interview.backend.server.core;
 
 import com.collibra.interview.backend.server.protocol.Conversation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,13 +15,14 @@ import java.net.SocketTimeoutException;
  */
 public class CollibraServer {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
     private static final int DEFAULT_TIME_OUT_MS = 30 * 1000;
 
     public void start(int port) {
 
         ServerSocket serverSocket = setupSocket(port);
-
-        System.out.println(String.format("Server running on port [%s]", port));
+        logger.info(String.format("Server running on port [%s]", port));
 
         while (true) {
 

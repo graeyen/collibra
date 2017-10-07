@@ -10,8 +10,6 @@ public class CollibraBootstrap {
     private static final int DEFAULT_PORT = 50000;
 
     public static void main(String[] args)  {
-
-        CollibraServer collibraServer = new CollibraServer();
-        collibraServer.start(DEFAULT_PORT);
+        new CollibraServer().start(DEFAULT_PORT);
     }
 }

@@ -1,5 +1,8 @@
 package com.collibra.interview.backend.server.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -8,6 +11,7 @@ import java.nio.charset.Charset;
 
 public class AsciiOutputChannel {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     private PrintWriter writer;
 
     public AsciiOutputChannel(Socket socket) {
@@ -20,7 +24,7 @@ public class AsciiOutputChannel {
     }
 
     public void sendMessage(String message) {
-        System.out.println("SEND:" + message);
+        logger.debug("Send:" + message);
         writer.println(message);
     }
 
