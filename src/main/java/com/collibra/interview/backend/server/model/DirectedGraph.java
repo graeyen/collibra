@@ -1,5 +1,8 @@
 package com.collibra.interview.backend.server.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DirectedGraph {
 
     private Nodes nodes = new Nodes();
@@ -42,6 +45,10 @@ public class DirectedGraph {
             return new PathFinder().findShortestPath(startNode, targetNode);
         }
         throw new IllegalArgumentException("Node(s) not existing");
+    }
+
+    public List<String> closerThan(int weight, String nodeName) {
+        return new ArrayList();
     }
 
     private boolean doesNotExists(String nodeName1) {
