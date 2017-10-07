@@ -39,7 +39,7 @@ public class DirectedGraph {
         Node targetNode = nodes.getNodeByName(targetNodeName);
 
         if (startNode != null && targetNode != null) {
-            return new FasterPathFinder().findShortestPath(startNode, targetNode);
+            return new PathFinder().findShortestPath(startNode, targetNode);
         }
         throw new IllegalArgumentException("Node(s) not existing");
     }

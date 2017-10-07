@@ -29,4 +29,8 @@ public class Node {
         Node other = (Node) otherNode;
         return other.nodeName.equals(nodeName);
     }
+
+    public boolean hasName(String name) {
+        return nodeName.equals(name);
+    }
 }

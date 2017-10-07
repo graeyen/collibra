@@ -1,93 +1,80 @@
 package com.collibra.interview.backend.server.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PathFinder {
 
     public static final int NO_ROUTE_WEIGHT = Integer.MAX_VALUE;
+    private static final long MAX_NR_WALKS = 2500;
 
-    private int weight;
-    private List<Edge> edges;
-    private List<Node> nodesPassed;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     public int findShortestPath(Node startNode, Node targetNode) {
 
-        // setup
-        SubPathsStack subPathsStack = new SubPathsStack();
-
+        // Default
         int finalWeight = NO_ROUTE_WEIGHT;
+        long nrWalks = 0;
 
-        weight = 0;
-        edges = startNode.edges;
-        nodesPassed = new ArrayList();
-        nodesPassed.add(startNode);
+        List<Path> paths = setupStartPath(startNode);
 
-        // walk the edges
-        while(!edges.isEmpty()) {
+        boolean doKeepOnWalking;
 
-            Edge currentEdge = edges.get(0);
+        // start walking the paths.
+        do {
+            nrWalks++;
+            doKeepOnWalking = false;
 
-            if (edges.size() > 1) {
-                pushOtherEdgesToStackForFutureReference(subPathsStack);
-            }
+            List<Path> extendedPaths = new ArrayList<>();
+            for(Path path : paths) {
+                List<Edge> edges = path.getLastNodeEdges();
 
-            weight = weight + currentEdge.weight;
+                // walk all edges
+                for(Edge edge : edges) {
+                    Node extraNode = edge.targetNode;
 
-            // found a path
-            if (currentEdgePointsToTargetNode(targetNode.nodeName, currentEdge)) {
-                // only override weight if it's a shorter path.
-                if (weight < finalWeight) {
-                    finalWeight = weight;
-                }
+                    // Loop found, break of walking this edge.
+                    if(path.contains(extraNode)) {
+                       continue;
+                    }
 
-                // keep looking for shorter paths if other paths are available.
-                if(subPathsStack.isEmpty()) {
-                    return finalWeight;
-                } else {
-                    loadSubPath(subPathsStack.pop());
-                }
+                    // Extend a copy of the path with one node
+                    Path extendedPath = path.addNode(extraNode, edge.weight);
 
-            // we are looping, continue with another path if available
-            } else if(nodesPassed.contains(currentEdge.targetNode)) {
-                if(subPathsStack.isEmpty()) {
-                    return finalWeight;
-                } else {
-                    loadSubPath(subPathsStack.pop());
-                }
+                    // Path already longer than another one, break off walking this edge.
+                    if(extendedPath.getWeight() >= finalWeight) {
+                        continue;
+                    }
 
-            }
-            // let's continue our path with the next available edge.
-            else {
+                    // found our target !
+                    if(extraNode.hasName(targetNode.nodeName)) {
+                        finalWeight = extendedPath.getWeight();
 
-                nodesPassed.add(currentEdge.targetNode);
-                edges = currentEdge.getEdgesTargetNode();
-
-                if(edges.isEmpty() && !subPathsStack.isEmpty()) {
-                    loadSubPath(subPathsStack.pop());
+                    // Target not yet found, continue this path in the next iteration
+                    } else {
+                        doKeepOnWalking = true;
+                        extendedPaths.add(extendedPath);
+                    }
                 }
             }
-        }
+            // for the next iteration, the extended paths become the paths to be extended.
+            paths = extendedPaths;
+
+        // Added a saveguard to avoid crashing the application when to many walks are invoked.
+        } while(doKeepOnWalking && nrWalks < MAX_NR_WALKS);
+
+        logger.debug(String.format("Number of steps executed: [%s]", nrWalks));
         return finalWeight;
+
     }
 
-    private boolean currentEdgePointsToTargetNode(String targetNodeName, Edge currentEdge) {
-        return currentEdge.targetNode.nodeName.equals(targetNodeName);
-    }
-
-    private void pushOtherEdgesToStackForFutureReference(SubPathsStack subRoutesStack) {
-        List<Edge> edgesMinusOne = new ArrayList();
-
-        for (int i=1; i< edges.size(); i++) {
-            edgesMinusOne.add(edges.get(i));
-        }
-
-        subRoutesStack.push(new SubPath(weight, edgesMinusOne, nodesPassed));
-    }
-
-    private void loadSubPath(SubPath subPath) {
-        edges = subPath.edgesToWalk;
-        weight = subPath.weight;
-        nodesPassed = subPath.nodesPassed;
+    private List<Path> setupStartPath(Node startNode) {
+        List<Path> paths = new ArrayList();
+        Path startPath = new Path(startNode);
+        paths.add(startPath);
+        return paths;
     }
 }
