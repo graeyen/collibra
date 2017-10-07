@@ -1,5 +1,8 @@
-package com.collibra.interview.backend.server.model;
+package com.collibra.interview.backend.server.algorithm;
 
+import com.collibra.interview.backend.server.model.Edge;
+import com.collibra.interview.backend.server.model.Node;
+import com.collibra.interview.backend.server.model.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +36,16 @@ public class PathFinder {
             nrWalks++;
             doKeepOnWalking = false;
 
-            logger.debug("Start walking walk nr [%s]", nrWalks);
+            logger.trace(String.format("Start walking walk nr [%s]", nrWalks));
             List<Path> extendedPaths = new ArrayList<>();
+            logger.trace(String.format("For this walk we have [%s] paths to follow", paths.size()));
             for(Path path : paths) {
                 List<Edge> edges = path.getLastNodeEdges();
 
                 // walk all edges
+                logger.trace(String.format("Start walking [%s] edges", edges.size()));
                 for(Edge edge : edges) {
-                    Node extraNode = edge.targetNode;
+                    Node extraNode = edge.getTargetNode();
 
                     // Loop found, break of walking this edge.
                     if(path.contains(extraNode)) {
@@ -48,7 +53,7 @@ public class PathFinder {
                     }
 
                     // Extend a copy of the path with one node
-                    Path extendedPath = path.addNode(extraNode, edge.weight);
+                    Path extendedPath = path.addNode(extraNode, edge.getWeight());
 
                     // Path already longer than another one, break off walking this edge.
                     if(extendedPath.getWeight() >= finalWeight) {
@@ -56,7 +61,7 @@ public class PathFinder {
                     }
 
                     // found our target !
-                    if(extraNode.hasName(targetNode.nodeName)) {
+                    if(extraNode.hasName(targetNode.getNodeName())) {
                         finalWeight = extendedPath.getWeight();
 
                     // Target not yet found, continue this path in the next iteration

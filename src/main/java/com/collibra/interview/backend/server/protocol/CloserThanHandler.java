@@ -1,5 +1,7 @@
 package com.collibra.interview.backend.server.protocol;
 
+import java.util.List;
+
 public class CloserThanHandler extends DirectGraphHandler implements ConversationHandler {
 
     @Override
@@ -13,6 +15,10 @@ public class CloserThanHandler extends DirectGraphHandler implements Conversatio
         int weight = Integer.valueOf(inputValues[0]);
         String node = inputValues[1];
 
-        return directedGraph.closerThan(weight, node).toString();
+        return formatList(directedGraph.findCloserThan(weight, node));
+    }
+
+    private String formatList(List<String> result) {
+        return "";
     }
 }

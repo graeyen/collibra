@@ -24,7 +24,7 @@ public class AsciiOutputChannel {
     }
 
     public void sendMessage(String message) {
-        logger.debug("Send:" + message);
+        logger.info("Send:" + message);
         writer.println(message);
     }
 

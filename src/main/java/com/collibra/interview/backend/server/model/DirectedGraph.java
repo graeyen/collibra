@@ -1,5 +1,8 @@
 package com.collibra.interview.backend.server.model;
 
+import com.collibra.interview.backend.server.algorithm.PathFinder;
+import com.collibra.interview.backend.server.algorithm.ShorterThanFinder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +50,8 @@ public class DirectedGraph {
         throw new IllegalArgumentException("Node(s) not existing");
     }
 
-    public List<String> closerThan(int weight, String nodeName) {
-        return new ArrayList();
+    public List<String> findCloserThan(int weight, String nodeName) {
+        return new ShorterThanFinder().findNodesInRangeFor(nodes.getNodeByName(nodeName), weight);
     }
 
     private boolean doesNotExists(String nodeName1) {
@@ -61,10 +64,10 @@ public class DirectedGraph {
         content.append("[");
         for(Node aNode : nodes) {
             content.append("[");
-            content.append(aNode.nodeName + ":");
+            content.append(aNode.getNodeName() + ":");
             for (Edge anEdge : aNode.edges) {
                 content.append("(->");
-                content.append(anEdge.targetNode.nodeName + "+" + anEdge.weight);
+                content.append(anEdge.getTargetNode().getNodeName() + "+" + anEdge.getWeight());
                 content.append(")");
             }
             content.append("]");

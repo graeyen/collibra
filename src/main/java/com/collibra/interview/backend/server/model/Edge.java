@@ -3,12 +3,13 @@ package com.collibra.interview.backend.server.model;
 import java.util.List;
 
 public class Edge {
-    Node targetNode;
-    int weight;
+    private Node targetNode;
+    private int weight;
 
     public Edge(Node targetNode) {
         this(targetNode, 0);
     }
+
     public Edge(Node targetNode, int weight) {
         this.targetNode = targetNode;
         this.weight = weight;
@@ -36,7 +37,15 @@ public class Edge {
         StringBuilder content = new StringBuilder();
 
         return content.append("(->")
-                .append(targetNode.nodeName + "+" + weight)
+                .append(targetNode.getNodeName() + "+" + weight)
                 .append(")").toString();
+    }
+
+    public Node getTargetNode() {
+        return targetNode;
+    }
+
+    public int getWeight() {
+        return weight;
     }
 }

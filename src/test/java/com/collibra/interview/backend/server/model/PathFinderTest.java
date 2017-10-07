@@ -1,5 +1,6 @@
 package com.collibra.interview.backend.server.model;
 
+import com.collibra.interview.backend.server.algorithm.PathFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Node {
 
-    String nodeName;
+    private String nodeName;
     List<Edge> edges = new ArrayList();
 
     public Node(String nodeName) {
@@ -32,5 +32,9 @@ public class Node {
 
     public boolean hasName(String name) {
         return nodeName.equals(name);
+    }
+
+    public String getNodeName() {
+        return nodeName;
     }
 }

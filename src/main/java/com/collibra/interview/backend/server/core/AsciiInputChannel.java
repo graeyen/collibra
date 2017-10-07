@@ -24,7 +24,7 @@ public class AsciiInputChannel {
     public String read() throws IOException {
 
         String response = reader.readLine();
-        logger.debug("Received: " + response);
+        logger.info("Received: " + response);
 
         return response;
     }
