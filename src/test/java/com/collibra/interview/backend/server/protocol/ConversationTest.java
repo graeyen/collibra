@@ -65,4 +65,10 @@ public class ConversationTest {
         String result = conversation.answer("BLA");
         Assert.assertEquals("SORRY, I DIDN'T UNDERSTAND THAT", result);
     }
+
+    @Test
+    public void testCloser() {
+        String message = "CLOSER THAN 16 Phase4-Node-284";
+        Assert.assertEquals("[]", conversation.answer(message));
+    }
 }

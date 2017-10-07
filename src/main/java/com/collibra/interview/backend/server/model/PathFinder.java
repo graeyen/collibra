@@ -15,6 +15,11 @@ public class PathFinder {
 
     public int findShortestPath(Node startNode, Node targetNode) {
 
+        // corner case where we don't need to look for pathways
+        if(startNode.equals(targetNode)) {
+            return 0;
+        }
+
         // Default
         int finalWeight = NO_ROUTE_WEIGHT;
         long nrWalks = 0;
@@ -28,6 +33,7 @@ public class PathFinder {
             nrWalks++;
             doKeepOnWalking = false;
 
+            logger.debug("Start walking walk nr [%s]", nrWalks);
             List<Path> extendedPaths = new ArrayList<>();
             for(Path path : paths) {
                 List<Edge> edges = path.getLastNodeEdges();

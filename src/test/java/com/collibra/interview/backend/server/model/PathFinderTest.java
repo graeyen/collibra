@@ -365,6 +365,26 @@ public class PathFinderTest {
 
     }
 
+    @Test
+    public void testSameNode() {
+        directedGraph.addNode("node1");
+        directedGraph.addNode("node2");
+        directedGraph.addNode("node3");
+        directedGraph.addNode("node4");
+        directedGraph.addNode("node5");
+        directedGraph.addNode("node6");
+        directedGraph.addNode("node7");
+        directedGraph.addNode("node8");
+        directedGraph.addNode("node9");
+        directedGraph.addNode("node10");
+
+
+        directedGraph.addEdge("node9", "node2", 2);
+        directedGraph.addEdge("node9", "node3", 3);
+        directedGraph.addEdge("node9", "node4", 5);
+        directedGraph.addEdge("node9", "node7", 7);
+        Assert.assertEquals(0, pathFinder.findShortestPath(getNode("node9"),getNode("node9")));
+    }
 
     private Node getNode(String name) {
         return directedGraph.getNode(name);
