@@ -5,8 +5,8 @@ package com.collibra.interview.backend.server.protocol;
  */
 public class SessionContext {
 
-    long startTime;
-    String clientName;
+    public long startTime;
+    public String clientName;
 
     public SessionContext(long startTime) {
         this.startTime = startTime;

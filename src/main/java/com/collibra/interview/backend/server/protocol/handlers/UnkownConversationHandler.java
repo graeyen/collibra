@@ -1,4 +1,6 @@
-package com.collibra.interview.backend.server.protocol;
+package com.collibra.interview.backend.server.protocol.handlers;
+
+import com.collibra.interview.backend.server.protocol.SessionContext;
 
 /**
  * Created by ger on 29/09/2017.

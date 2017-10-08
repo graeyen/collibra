@@ -1,4 +1,7 @@
-package com.collibra.interview.backend.server.protocol;
+package com.collibra.interview.backend.server.protocol.handlers;
+
+import com.collibra.interview.backend.server.protocol.ClientMessages;
+import com.collibra.interview.backend.server.protocol.SessionContext;
 
 public class AddNodeHandler extends DirectGraphHandler implements ConversationHandler {
 

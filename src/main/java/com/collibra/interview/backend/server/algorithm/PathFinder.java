@@ -43,8 +43,7 @@ public class PathFinder {
                 List<Edge> edges = path.getLastNodeEdges();
 
                 // walk all edges
-                logger.trace(String.format("Start walking [%s] edges", edges.size()));
-                for(Edge edge : edges) {
+               for(Edge edge : edges) {
                     Node extraNode = edge.getTargetNode();
 
                     // Loop found, break of walking this edge.

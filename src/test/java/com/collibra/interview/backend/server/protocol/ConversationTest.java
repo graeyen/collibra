@@ -1,5 +1,6 @@
 package com.collibra.interview.backend.server.protocol;
 
+import com.collibra.interview.backend.server.protocol.handlers.DirectGraphHandler;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,7 @@ public class ConversationTest {
     public void setup() {
         conversation = Conversation.create();
         conversation.start();
-        DirectGraphHandler.directedGraph.clear();
+        DirectGraphHandler.getGraph().clear();
     }
 
     @Test

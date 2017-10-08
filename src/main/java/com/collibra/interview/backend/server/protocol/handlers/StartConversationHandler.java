@@ -1,4 +1,4 @@
-package com.collibra.interview.backend.server.protocol;
+package com.collibra.interview.backend.server.protocol.handlers;
 
 import java.util.function.Supplier;
 
