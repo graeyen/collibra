@@ -60,7 +60,7 @@ public class PathFinder {
                     }
 
                     // found our target !
-                    if(extraNode.hasName(targetNode.getNodeName())) {
+                    if(extraNode.hasName(targetNode.getName())) {
                         finalWeight = extendedPath.getWeight();
 
                     // Target not yet found, continue this path in the next iteration

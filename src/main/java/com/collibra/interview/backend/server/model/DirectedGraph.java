@@ -3,7 +3,6 @@ package com.collibra.interview.backend.server.model;
 import com.collibra.interview.backend.server.algorithm.PathFinder;
 import com.collibra.interview.backend.server.algorithm.ShorterThanFinder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DirectedGraph {
@@ -64,10 +63,10 @@ public class DirectedGraph {
         content.append("[");
         for(Node aNode : nodes) {
             content.append("[");
-            content.append(aNode.getNodeName() + ":");
+            content.append(aNode.getName() + ":");
             for (Edge anEdge : aNode.edges) {
                 content.append("(->");
-                content.append(anEdge.getTargetNode().getNodeName() + "+" + anEdge.getWeight());
+                content.append(anEdge.getTargetNode().getName() + "+" + anEdge.getWeight());
                 content.append(")");
             }
             content.append("]");

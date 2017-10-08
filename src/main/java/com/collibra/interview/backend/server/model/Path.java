@@ -14,7 +14,7 @@ public class Path {
     }
 
     public Path(Node node) {
-        nodeNames.add(node.getNodeName());
+        nodeNames.add(node.getName());
         lastNode = node;
     }
 
@@ -24,7 +24,7 @@ public class Path {
         copy.weight = this.weight;
         copy.nodeNames = new ArrayList(this.nodeNames);
 
-        copy.nodeNames.add(node.getNodeName());
+        copy.nodeNames.add(node.getName());
         copy.weight = weight + weightToNode;
         copy.lastNode = node;
 
@@ -32,7 +32,7 @@ public class Path {
     }
 
     public boolean contains(Node node) {
-        return nodeNames.contains(node.getNodeName());
+        return nodeNames.contains(node.getName());
     }
 
     public int getWeight() {

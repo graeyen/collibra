@@ -68,8 +68,14 @@ public class ConversationTest {
     }
 
     @Test
+    public void testCloserWhereNodeDoesNotExists() {
+        String message = "CLOSER THAN 16 Phase4-Node-284";
+        Assert.assertEquals("ERROR: NODE NOT FOUND", conversation.answer(message));
+    }
+
+    @Test
     public void testCloser() {
         String message = "CLOSER THAN 16 Phase4-Node-284";
-        Assert.assertEquals("", conversation.answer(message));
+        Assert.assertEquals("ERROR: NODE NOT FOUND", conversation.answer(message));
     }
 }

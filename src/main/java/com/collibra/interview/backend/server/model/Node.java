@@ -34,7 +34,11 @@ public class Node {
         return nodeName.equals(name);
     }
 
-    public String getNodeName() {
+    public List<Edge> getEdges() {
+        return edges;
+    }
+
+    public String getName() {
         return nodeName;
     }
 }

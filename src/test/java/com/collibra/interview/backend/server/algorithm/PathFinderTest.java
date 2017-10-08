@@ -1,6 +1,8 @@
-package com.collibra.interview.backend.server.model;
+package com.collibra.interview.backend.server.algorithm;
 
 import com.collibra.interview.backend.server.algorithm.PathFinder;
+import com.collibra.interview.backend.server.model.DirectedGraph;
+import com.collibra.interview.backend.server.model.Node;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

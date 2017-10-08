@@ -37,7 +37,7 @@ public class Edge {
         StringBuilder content = new StringBuilder();
 
         return content.append("(->")
-                .append(targetNode.getNodeName() + "+" + weight)
+                .append(targetNode.getName() + "+" + weight)
                 .append(")").toString();
     }
 
